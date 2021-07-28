@@ -75,6 +75,26 @@ app.post('/add/task', printDebugInfo, function (req, res) {
      var colorTag = req.body.colorTag;
      var notes = req.body.notes;
 
+     if (
+          title == "" || title == null || date == "" || date == null ||
+          timeFrom == "" || timeFrom == null || timeTo == "" || timeTo == null
+     ) {
+          var output = {
+               "result": "Please fill in all necessary fields!"
+          };
+
+          res.status(422).send(output);
+          return;
+     }
+
+     if (timeFrom >= timeTo) {
+          var output = {
+               "result": "Time From must be before time to"
+          };
+          res.status(422).send(output);
+          return;
+     }
+
 
      task.addTask(title, date, timeFrom, timeTo, colorTag, notes, function (err, result) {
           if (!err) {
@@ -109,6 +129,27 @@ app.put('/task/:id/', printDebugInfo, function (req, res) {
      var colorTag = req.body.colorTag;
      var notes = req.body.notes;
      var taskID = req.params.id;
+
+     if (
+          title == "" || title == null || date == "" || date == null ||
+          timeFrom == "" || timeFrom == null || timeTo == "" || timeTo == null
+     ) {
+          var output = {
+               "result": "Please fill in all necessary fields!"
+          };
+
+          res.status(422).send(output);
+          return;
+     }
+
+     if (timeFrom >= timeTo) {
+          var output = {
+               "result": "Time From must be before time to"
+          };
+          res.status(422).send(output);
+          return;
+     }
+
 
      task.updateTask(title, date, timeFrom, timeTo, colorTag, notes, taskID, function (err, result) {
           if (!err) {
